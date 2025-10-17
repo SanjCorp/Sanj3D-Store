@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Request Sent</title>
+<meta name="author" content="Ricardo Sanjines">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="container header">
+  <div class="brand">
+    <h1>Request Sent</h1>
+  </div>
+</header>
+<main class="container">
+  <h2>Received Data</h2>
+  <div id="result"></div>
+  <p>This is a demonstration. On a real site, the information would be sent to the server here, and you would receive an email.</p>
+</main>
+<footer class="container footer">
+  <div>© Ricardo Sanjines</div>
+</footer>
+<script>
+// Display the parameters sent via GET
+const params = new URLSearchParams(location.search);
+const result = document.getElementById('result');
+if (Array.from(params.keys()).length === 0) {
+  result.innerText = 'No data was received. Try submitting the form from contact.html';
+} else {
+  const ul = document.createElement('ul');
+  for (const [k, v] of params) {
+    const li = document.createElement('li');
+    li.textContent = `${k}: ${v}`;
+    ul.appendChild(li);
+  }
+  result.appendChild(ul);
+}
+</script>
+</body>
+</html>

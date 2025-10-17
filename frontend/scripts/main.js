@@ -1,1 +1,6 @@
-document.getElementById("seeProducts").addEventListener("click",()=>{window.location.href="products.html";});
+import { loadProducts } from './catalogo.js';
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const products = await loadProducts();
+  // tu código de destacados y favoritos queda igual
+});
