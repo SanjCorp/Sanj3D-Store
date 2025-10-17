@@ -1,9 +1,17 @@
 import mongoose from "mongoose";
+
 const orderSchema = new mongoose.Schema({
-  customer: String,
+  customerName: String,
   email: String,
-  items: Array,
+  address: String,
+  products: [
+    {
+      productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+      quantity: Number,
+    },
+  ],
   total: Number,
-  date: { type: Date, default: Date.now }
+  date: { type: Date, default: Date.now },
 });
+
 export default mongoose.model("Order", orderSchema);
