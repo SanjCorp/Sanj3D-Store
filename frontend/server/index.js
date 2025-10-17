@@ -25,9 +25,14 @@ const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "../frontend")));
 
 // API routes with versioning
+// Rutas API
 app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/cart", cartRoutes);
 app.use("/api/v1/contact", contactRoutes);
+
+// Archivos estáticos
+app.use(express.static("frontend"));
+
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
