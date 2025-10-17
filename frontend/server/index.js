@@ -19,32 +19,28 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve frontend files
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-app.use(express.static(path.join(__dirname, "../frontend")));
-
-// API routes with versioning
-// Rutas API
+// Routes API (poner antes de servir frontend)
 app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/cart", cartRoutes);
 app.use("/api/v1/contact", contactRoutes);
 
-// Archivos estáticos
-app.use(express.static("frontend"));
+// Servir archivos estáticos del frontend
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname, "../frontend")));
 
-
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log("MongoDB connected"))
-.catch((err) => console.error("MongoDB connection error:", err));
-
-// Fallback to index.html for any other route (for frontend routing)
+// Catch-all para frontend (SPA)
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/index.html"));
 });
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Conectar MongoDB
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log("✅ Conectado a MongoDB Atlas"))
+.catch((err) => console.error("MongoDB connection error:", err));
+
+// Iniciar servidor
+app.listen(PORT, () => console.log(`🚀 Servidor corriendo en puerto ${PORT}`));

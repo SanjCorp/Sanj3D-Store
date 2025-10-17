@@ -1,18 +1,26 @@
 import express from "express";
-import Contact from "../models/contact.js"; // tu modelo de MongoDB
+import Contact from "../models/contact.js";
 
 const router = express.Router();
 
-// POST /api/contact
+// Crear contacto
 router.post("/", async (req, res) => {
   try {
-    const { name, email, type, message, date } = req.body;
-    const newContact = new Contact({ name, email, type, message, date });
+    const newContact = new Contact(req.body);
     await newContact.save();
-    res.status(201).json({ message: "Request saved successfully" });
+    res.status(201).json(newContact);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: "Error saving contact" });
+  }
+});
+
+// Obtener todos los contactos
+router.get("/", async (req, res) => {
+  try {
+    const contacts = await Contact.find();
+    res.json(contacts);
+  } catch (err) {
+    res.status(500).json({ error: "Error fetching contacts" });
   }
 });
 
