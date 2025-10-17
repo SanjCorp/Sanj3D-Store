@@ -1,16 +1,18 @@
-import express from 'express';
-import Contact from '../models/contact.js';
+import express from "express";
+import Contact from "../models/contact.js"; // tu modelo de MongoDB
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+// POST /api/contact
+router.post("/", async (req, res) => {
   try {
-    const newContact = new Contact(req.body);
+    const { name, email, type, message, date } = req.body;
+    const newContact = new Contact({ name, email, type, message, date });
     await newContact.save();
-    res.status(201).json(newContact);
+    res.status(201).json({ message: "Request saved successfully" });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ error: "Server error" });
   }
 });
 

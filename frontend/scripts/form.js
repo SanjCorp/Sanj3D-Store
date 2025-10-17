@@ -1,18 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('solicitud');
-  const params = new URLSearchParams(location.search);
-  const product = params.get('producto');
-
-  if (product) {
-    const msg = document.getElementById('mensaje');
-    if (msg) msg.value = `I request information and a quote for: ${product}\n`;
-  }
 
   form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // evita el envío normal
 
     if (!form.checkValidity()) {
-      alert('Please fill in the required fields.');
+      alert('Please fill in all required fields.');
       return;
     }
 
@@ -25,20 +18,18 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     try {
-      const res = await fetch('/api/v1/contact', {
+      const res = await fetch('https://sanj3d-store.onrender.com/api/contact', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
 
-      if (!res.ok) throw new Error('Network response was not ok');
-
-      alert('Request submitted successfully!');
-      form.reset();
-      localStorage.setItem('lastRequest', JSON.stringify(data));
-
+      if (res.ok) {
+        alert('Request submitted successfully!');
+        form.reset();
+      } else {
+        alert('Error sending request. Please try again later.');
+      }
     } catch (err) {
       console.error(err);
       alert('Network error, please try again later.');
