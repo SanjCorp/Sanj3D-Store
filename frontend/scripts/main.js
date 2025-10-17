@@ -1,0 +1,1 @@
+document.getElementById("seeProducts").addEventListener("click",()=>{window.location.href="products.html";});

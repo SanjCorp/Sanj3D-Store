@@ -1,0 +1,2 @@
+function addToCart(id,name,price){const cart=JSON.parse(localStorage.getItem("cart"))||[];cart.push({id,name,price});localStorage.setItem("cart",JSON.stringify(cart));alert(`${name} added to cart!`);}
+function renderCart(){const cart=JSON.parse(localStorage.getItem("cart"))||[];const container=document.getElementById("cartItems");const total=cart.reduce((s,p)=>s+p.price,0);container.innerHTML=cart.map(p=>`<li>${p.name} - $${p.price}</li>`).join("");document.getElementById("total").textContent=`$${total}`;}

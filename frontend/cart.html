@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart | Sanj3D Store</title>
+  <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+  <header><h1>Your Cart</h1></header>
+  <main>
+    <ul id="cartItems"></ul>
+    <h3>Total: <span id="total">$0</span></h3>
+    <button id="checkoutBtn">Checkout</button>
+  </main>
+  <script src="scripts/cart.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", renderCart);</script>
+</body>
+</html>
