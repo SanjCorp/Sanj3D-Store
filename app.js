@@ -2,6 +2,8 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 
 import productRoutes from "./routes/products.js";
 import orderRoutes from "./routes/orders.js";
@@ -14,22 +16,30 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Rutas
+// Rutas de API
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 
-// Ruta principal
-app.get("/", (req, res) => {
-  res.send("🚀 Sanj3D Store API funcionando correctamente");
+// Variables para manejar __dirname en ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Servir carpeta frontend como estática
+app.use(express.static(path.join(__dirname, "frontend")));
+
+// Ruta principal y fallback para SPA
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "index.html"));
 });
 
-// Conexión a MongoDB
+// Conexión a MongoDB y arranque del servidor
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("✅ Conectado a MongoDB Atlas");
-    app.listen(process.env.PORT || 3000, () => {
-      console.log(`🚀 Servidor corriendo en puerto ${process.env.PORT || 3000}`);
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+      console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
     });
   })
   .catch((err) => console.error("❌ Error al conectar MongoDB:", err));
