@@ -1,5 +1,20 @@
 const form = document.getElementById("solicitud");
 
+// ✅ Guardar cada campo en LocalStorage al escribir
+form.addEventListener("input", (e) => {
+  localStorage.setItem(e.target.name, e.target.value);
+});
+
+// ✅ Cargar valores almacenados al iniciar
+window.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("input, textarea, select").forEach(input => {
+    if (localStorage.getItem(input.name)) {
+      input.value = localStorage.getItem(input.name);
+    }
+  });
+});
+
+// ✅ Enviar datos a la API (registrar producto o solicitud)
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -23,10 +38,11 @@ form.addEventListener("submit", async (e) => {
     const data = await res.json();
 
     if (res.ok) {
-      alert("✅ Producto registrado correctamente");
+      alert("✅ Datos enviados correctamente a la API");
       form.reset();
+      localStorage.clear();
     } else {
-      alert(`❌ Error: ${data.error}`);
+      alert(`❌ Error del servidor: ${data.error || 'Intenta de nuevo'}`);
     }
   } catch (err) {
     alert(`❌ Error de conexión: ${err.message}`);

@@ -1,41 +1,28 @@
-const form = document.getElementById('usuarioForm');
-const list = document.getElementById('list');
+document.addEventListener("DOMContentLoaded", async () => {
+  const container = document.getElementById("product-container");
 
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+  try {
+    const response = await fetch("https://sanj3d-store.onrender.com/api/products");
+    const products = await response.json();
 
-    const userData = {
-        name: form.name.value,
-        email: form.email.value,
-        projectType: form.projectType.value,
-        requestDetails: form.requestDetails.value
-    };
-
-    try {
-        const response = await fetch('/api/usuarios', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(userData)
-        });
-        const result = await response.json();
-        addUserToList(result);
-        form.reset();
-    } catch (error) {
-        console.error('Error:', error);
+    if (!Array.isArray(products)) {
+      throw new Error("La API no devolvió un array válido");
     }
+
+    products.forEach((p) => {
+      const card = document.createElement("div");
+      card.className = "product-card";
+      card.innerHTML = `
+        <img src="${p.image || 'img/default.png'}" alt="${p.name}">
+        <h3>${p.name}</h3>
+        <p><strong>Material:</strong> ${p.material || 'PLA'}</p>
+        <p><strong>Descripción:</strong> ${p.description || p.details || 'Sin detalles'}</p>
+        <p><strong>Precio:</strong> ${p.price ? p.price + ' Bs' : 'A consultar'}</p>
+      `;
+      container.appendChild(card);
+    });
+  } catch (error) {
+    console.error("Error al cargar productos:", error);
+    container.innerHTML = `<p style="color:red;">❌ No se pudieron cargar los productos.</p>`;
+  }
 });
-
-function addUserToList(user) {
-    const li = document.createElement('li');
-    li.textContent = `${user.name} - ${user.email} - ${user.projectType} - ${user.requestDetails}`;
-    list.appendChild(li);
-}
-
-// Fetch initial users
-async function fetchUsers() {
-    const response = await fetch('/api/usuarios');
-    const usuarios = await response.json();
-    usuarios.forEach(addUserToList);
-}
-
-fetchUsers();
