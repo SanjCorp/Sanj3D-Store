@@ -1,32 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Registro de Proyecto - Sanj3D Store</title>
-  <link rel="stylesheet" href="usuario.css" />
-</head>
-<body>
-  <main>
-    <h1>Registrar Proyecto</h1>
-    <form id="solicitud">
-      <label>Nombre:</label>
-      <input type="text" id="nombre" name="nombre" required />
+<form id="solicitud">
+  <input type="text" id="nombre" name="name" placeholder="Nombre" required>
+  <input type="email" id="email" name="email" placeholder="Email" required>
+  <input type="text" id="tipo" name="type" placeholder="Tipo de proyecto" required>
+  <textarea id="mensaje" name="details" placeholder="Detalles" required></textarea>
+  <button type="submit">Enviar</button>
+</form>
 
-      <label>Email:</label>
-      <input type="email" id="email" name="email" required />
-
-      <label>Tipo de Proyecto:</label>
-      <input type="text" id="tipo" name="tipo" required />
-
-      <label>Detalles:</label>
-      <textarea id="mensaje" name="mensaje" required></textarea>
-
-      <button type="submit">Enviar</button>
-    </form>
-  </main>
-
-  <script src="scripts/form.js"></script>
-  <script src="scripts/usuario.js"></script>
-</body>
-</html>
+<script src="./scripts/usuario.js" type="module"></script>
