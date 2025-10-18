@@ -6,43 +6,129 @@
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="cart.css">
 <style>
-  /* Mejoras estéticas rápidas */
-  body { font-family: Arial, sans-serif; background: #f9f9f9; color: #333; margin:0; }
-  .cart-header { display: flex; justify-content: space-between; align-items: center; background: #0057b7; color: white; padding: 1rem; }
-  .logo { height: 50px; margin-right: 1rem; }
-  .btn-back { background: white; color: #0057b7; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; }
-  .cart-main { max-width: 900px; margin: 2rem auto; padding: 1rem; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-  .cart-items-section, .checkout-section { margin-bottom: 2rem; }
-  .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding: 0.5rem 0; }
-  .cart-item-info { display: flex; flex-direction: column; }
-  .cart-item button { background: #ff4c4c; color: white; border: none; padding: 0.25rem 0.5rem; border-radius: 4px; cursor: pointer; }
-  .checkout-form label { display: block; margin: 0.5rem 0; }
-  .btn-submit { background: #0057b7; color: white; padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; margin-top: 1rem; }
+  body {
+    font-family: 'Poppins', Arial, sans-serif;
+    background: #f2f5f9;
+    margin: 0;
+    color: #333;
+  }
+  header {
+    background: linear-gradient(90deg, #004aad, #007bff);
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  header h1 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .logo {
+    width: 50px;
+    border-radius: 8px;
+  }
+  .btn-back {
+    background: white;
+    color: #004aad;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+  }
+  .btn-back:hover {
+    background: #e8f0ff;
+  }
+  main {
+    max-width: 900px;
+    margin: 2rem auto;
+    background: white;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+  h2 {
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding: 1rem 0;
+  }
+  .cart-item-info strong {
+    font-size: 1.1rem;
+  }
+  .cart-item button {
+    background: #ff4747;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+  }
+  .cart-item button:hover {
+    background: #e03e3e;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  label {
+    display: flex;
+    flex-direction: column;
+    font-weight: 600;
+  }
+  input {
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  .btn-submit {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.8rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .btn-submit:hover {
+    background: #005ecb;
+  }
 </style>
 </head>
 <body>
-<header class="cart-header">
-  <div class="logo-title">
-    <img src="img/15.jpg" alt="Robotics Lab Logo" class="logo">
-    <h1>Your Cart</h1>
-  </div>
-  <button class="btn-back" onclick="window.location.href='catalogo.html'">Back to Catalog</button>
+<header>
+  <h1><img src="img/15.jpg" alt="Logo" class="logo">Your Cart</h1>
+  <button class="btn-back" onclick="window.location.href='catalogo.html'">← Back to Catalog</button>
 </header>
 
-<main class="cart-main">
+<main>
   <section class="cart-items-section">
-    <h2>Products in Cart</h2>
-    <div id="cart-items" class="cart-items"></div>
+    <h2>Products in Your Cart</h2>
+    <div id="cart-items"></div>
   </section>
 
   <section class="checkout-section">
     <h2>Contact Information</h2>
-    <form id="checkout-form" class="checkout-form">
+    <form id="checkout-form">
       <label>
-        Name: <input type="text" name="name" placeholder="Your full name" required>
+        Name:
+        <input type="text" name="name" placeholder="Your full name" required>
       </label>
       <label>
-        Email: <input type="email" name="email" placeholder="example@mail.com" required>
+        Email:
+        <input type="email" name="email" placeholder="example@mail.com" required>
       </label>
       <button type="submit" class="btn-submit">Submit Order</button>
     </form>
@@ -50,13 +136,17 @@
 </main>
 
 <script type="module">
-// Mostrar carrito
 const cartItemsDiv = document.getElementById("cart-items");
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-// Función para renderizar productos en el carrito
+// Mostrar productos del carrito
 function renderCart() {
   cartItemsDiv.innerHTML = '';
+  if (cart.length === 0) {
+    cartItemsDiv.innerHTML = "<p>Your cart is empty 🛒</p>";
+    return;
+  }
+
   cart.forEach((item, index) => {
     const div = document.createElement("div");
     div.classList.add("cart-item");
@@ -71,7 +161,6 @@ function renderCart() {
     cartItemsDiv.appendChild(div);
   });
 
-  // Botón eliminar
   document.querySelectorAll(".cart-item button").forEach(btn => {
     btn.addEventListener("click", e => {
       const i = e.target.dataset.index;
@@ -84,7 +173,7 @@ function renderCart() {
 
 renderCart();
 
-// Enviar pedido al API de orders
+// Enviar pedido
 document.getElementById("checkout-form").addEventListener("submit", async e => {
   e.preventDefault();
   const formData = new FormData(e.target);
@@ -97,31 +186,32 @@ document.getElementById("checkout-form").addEventListener("submit", async e => {
   }
 
   try {
-    // Enviar cada producto como orden individual
     for (const item of cart) {
+      // 👇 Verifica cuál es tu campo ID real en el objeto del carrito
+      const productId = item._id || item.id || item.productId;
+      if (!productId) throw new Error("Product ID missing in cart item.");
+
       const res = await fetch("https://sanj3d-store.onrender.com/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name,
           email,
-          product: item.id,   // ID correcto
-          quantity: item.quantity
+          product: productId,
+          quantity: item.quantity || 1
         })
       });
 
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Unknown error");
-      }
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || JSON.stringify(data));
     }
 
-    alert("✅ All orders submitted successfully!");
+    alert("✅ Your order has been successfully submitted!");
     localStorage.removeItem("cart");
     window.location.href = "index.html";
-
   } catch (err) {
     alert(`❌ Error: ${err.message}`);
+    console.error(err);
   }
 });
 </script>

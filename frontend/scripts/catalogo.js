@@ -1,9 +1,8 @@
-// Manejar Buy
 document.querySelectorAll(".buy-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     const product = {
-      id: btn.dataset.id,          // <--- guardar ID
-      name: btn.dataset.product,
+      id: btn.dataset.id,         // ID interno (opcional)
+      name: btn.dataset.product,  // Este es el que va al backend
       price: Number(btn.dataset.price),
       quantity: 1
     };
@@ -19,9 +18,4 @@ document.querySelectorAll(".buy-btn").forEach(btn => {
     localStorage.setItem("cart", JSON.stringify(cart));
     alert(`${product.name} added to cart!`);
   });
-});
-
-// Ir al carrito
-document.getElementById("view-cart").addEventListener("click", () => {
-  window.location.href = "cart.html";
 });
