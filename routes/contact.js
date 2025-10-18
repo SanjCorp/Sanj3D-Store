@@ -3,25 +3,26 @@ import Contact from "../models/contact.js";
 
 const router = express.Router();
 
-// GET: obtener todos los contactos
+// GET todos los contactos
 router.get("/", async (req, res) => {
   try {
-    const contacts = await Contact.find();
-    res.json(contacts);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    const contactos = await Contact.find();
+    res.json(contactos); // <- importante, JSON, no renderizar HTML
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 
-// POST: guardar un nuevo contacto
+// POST un nuevo contacto
 router.post("/", async (req, res) => {
-  const { name, email, projectType, requestDetails } = req.body;
+  const { nombre, email, tipo, mensaje } = req.body;
+  const newContact = new Contact({ nombre, email, tipo, mensaje });
+
   try {
-    const newContact = new Contact({ name, email, projectType, requestDetails });
-    await newContact.save();
-    res.status(201).json({ message: "✅ Contacto guardado correctamente", contact: newContact });
-  } catch (err) {
-    res.status(400).json({ error: err.message });
+    const savedContact = await newContact.save();
+    res.status(201).json(savedContact);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 });
 
