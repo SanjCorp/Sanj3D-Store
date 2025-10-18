@@ -33,40 +33,43 @@ cart.forEach(item => {
   cartItemsDiv.appendChild(div);
 });
 
-// Enviar pedido al API de orders
+// Enviar cada producto al API de orders
 document.getElementById("checkout-form").addEventListener("submit", async e => {
   e.preventDefault();
   const formData = new FormData(e.target);
+  const name = formData.get("name");
+  const email = formData.get("email");
 
-  const order = {
-    name: formData.get("name"),
-    email: formData.get("email"),
-    products: cart.map(item => ({
-      productId: item.id, // asegúrate de guardar el id del producto al agregar al carrito
-      name: item.name,
-      quantity: item.quantity,
-      price: item.price
-    }))
-  };
+  if (cart.length === 0) {
+    alert("❌ Your cart is empty!");
+    return;
+  }
 
   try {
-    const res = await fetch("https://sanj3d-store.onrender.com/api/orders", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(order)
-    });
+    for (const item of cart) {
+      const res = await fetch("https://sanj3d-store.onrender.com/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          email,
+          product: item.name,
+          quantity: item.quantity
+        })
+      });
 
-    const data = await res.json();
-
-    if (res.ok) {
-      alert("✅ Order submitted successfully!");
-      localStorage.removeItem("cart");
-      window.location.href = "index.html";
-    } else {
-      alert(`❌ Error: ${data.error}`);
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Unknown error");
+      }
     }
+
+    alert("✅ All orders submitted successfully!");
+    localStorage.removeItem("cart");
+    window.location.href = "index.html";
+
   } catch (err) {
-    alert(`❌ Connection error: ${err.message}`);
+    alert(`❌ Error: ${err.message}`);
   }
 });
 </script>
