@@ -22,7 +22,7 @@ app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/cart", cartRoutes);
 app.use("/api/v1/contact", contactRoutes);
 
-// Swagger (Opcional)
+// Swagger
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
 
@@ -44,5 +44,10 @@ app.use(express.static("frontend"));
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ Conectado a MongoDB Atlas"))
   .catch(err => console.error("❌ Error de conexión:", err));
+
+// Manejo de rutas no encontradas para API
+app.use("/api/v1/*", (req, res) => {
+  res.status(404).json({ error: "Endpoint no encontrado" });
+});
 
 app.listen(PORT, () => console.log(`🚀 Servidor corriendo en puerto ${PORT}`));
