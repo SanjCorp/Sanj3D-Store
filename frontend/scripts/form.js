@@ -9,7 +9,7 @@ form.addEventListener("submit", async (e) => {
   const mensaje = document.getElementById("mensaje").value;
 
   try {
-    const res = await fetch("/api/v1/contact", {
+    const res = await fetch("https://sanj3d-store.onrender.com/api/usuarios", { // ✅ cambio de endpoint
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nombre, email, tipo, mensaje })

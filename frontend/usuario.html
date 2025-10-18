@@ -1,32 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Usuario - Sanj3D Store</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Usuario</title>
+    <link rel="stylesheet" href="usuario.css">
 </head>
 <body>
-  <h1>Submit Your Project Request</h1>
-  <form id="solicitud" novalidate>
-    <label for="nombre">Full Name</label><br>
-    <input id="nombre" name="nombre" required><br><br>
+    <header>
+        <h1>Registro de Usuario</h1>
+    </header>
 
-    <label for="email">Email</label><br>
-    <input id="email" name="email" type="email" required><br><br>
+    <main>
+        <form id="usuarioForm">
+            <label for="name">Nombre:</label>
+            <input type="text" id="name" name="name" required>
 
-    <label for="tipo">Project Type</label><br>
-    <select id="tipo" name="tipo">
-      <option value="educativo">Educational</option>
-      <option value="competencia">Competition</option>
-      <option value="personalizado">Custom</option>
-    </select><br><br>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
 
-    <label for="mensaje">Request Details</label><br>
-    <textarea id="mensaje" name="mensaje" rows="6" required></textarea><br><br>
+            <label for="projectType">Tipo de Proyecto:</label>
+            <input type="text" id="projectType" name="projectType" required>
 
-    <button class="btn" type="submit">Submit Request</button>
-  </form>
+            <label for="requestDetails">Detalles del Pedido:</label>
+            <textarea id="requestDetails" name="requestDetails" required></textarea>
 
-  <script type="module" src="scripts/form.js"></script>
+            <button type="submit">Enviar</button>
+        </form>
+
+        <div id="usuarioList">
+            <h2>Usuarios Registrados</h2>
+            <ul id="list"></ul>
+        </div>
+    </main>
+
+    <script src="usuario.js"></script>
 </body>
 </html>

@@ -5,12 +5,9 @@ import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 
-import contactRoutes from "../../routes/contact.js";
+import contactRoutes from "../../routes/usuarios.js";
 import productRoutes from "../../routes/products.js";
 import cartRoutes from "../../routes/cart.js";
-
-import swaggerUi from "swagger-ui-express";
-import swaggerJsdoc from "swagger-jsdoc";
 
 dotenv.config();
 
@@ -27,7 +24,10 @@ app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/cart", cartRoutes);
 app.use("/api/v1/contact", contactRoutes);
 
-// Swagger
+// Swagger (Opcional)
+import swaggerUi from "swagger-ui-express";
+import swaggerJsdoc from "swagger-jsdoc";
+
 const options = {
   definition: {
     openapi: "3.0.0",
@@ -39,13 +39,13 @@ const options = {
 const specs = swaggerJsdoc(options);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
-// Servir frontend
+// Servir frontend estático
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-app.use(express.static(path.join(__dirname, "../")));
+app.use(express.static(path.join(__dirname, "../"))); // apunta a la carpeta que contiene usuario.html
 
-// Catch-all (index.html) para rutas del frontend
-app.get("*", (req, res) => {
+// Ruta explícita para la página de usuario
+app.get("/usuario", (req, res) => {
   res.sendFile(path.join(__dirname, "../usuario.html"));
 });
 

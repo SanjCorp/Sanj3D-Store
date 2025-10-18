@@ -7,6 +7,7 @@ import { fileURLToPath } from "url";
 
 import productRoutes from "./routes/products.js";
 import orderRoutes from "./routes/orders.js";
+import usuarioRoutes from "./routes/usuarios.js"; // ✅ nueva ruta
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(express.json());
 // Rutas de API
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/usuarios", usuarioRoutes); // ✅ nueva ruta
 
 // Variables para manejar __dirname en ES modules
 const __filename = fileURLToPath(import.meta.url);

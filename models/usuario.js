@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
-const contactSchema = new mongoose.Schema({
+const usuarioSchema = new mongoose.Schema({
   nombre: { type: String, required: true },
   email: { type: String, required: true },
   tipo: { type: String, required: true },
   mensaje: { type: String, required: true },
 }, { timestamps: true });
 
-export default mongoose.model("Contact", contactSchema);
+export default mongoose.model("Usuario", usuarioSchema);
