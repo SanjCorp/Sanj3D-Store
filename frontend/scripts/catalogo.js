@@ -1,50 +1,26 @@
-// Modal logic
-const modal = document.getElementById("buy-modal");
-const closeModal = document.getElementById("modal-close");
-const buyForm = document.getElementById("buy-form");
-const productNameInput = document.getElementById("product-name");
-
-// Abrir modal al presionar Buy
+// Manejar Buy
 document.querySelectorAll(".buy-btn").forEach(btn => {
   btn.addEventListener("click", () => {
-    const productName = btn.dataset.product;
-    document.getElementById("product-name").value = productName;
-    document.getElementById("modal-title").textContent = `Buy ${productName}`;
-    document.getElementById("buy-modal").style.display = "flex"; // FULLSCREEN
+    const product = {
+      name: btn.dataset.product,
+      price: Number(btn.dataset.price),
+      quantity: 1
+    };
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const existing = cart.find(p => p.name === product.name);
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      cart.push(product);
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert(`${product.name} added to cart!`);
   });
 });
 
-// Cerrar modal
-document.getElementById("modal-close").addEventListener("click", () => {
-  document.getElementById("buy-modal").style.display = "none";
-});
-
-
-// Enviar datos al API orders
-buyForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const data = {
-    name: buyForm.nombre.value,
-    email: buyForm.email.value,
-    product: buyForm.producto.value,
-    quantity: parseInt(buyForm.cantidad.value),
-  };
-
-  try {
-    const res = await fetch("https://sanj3d-store.onrender.com/api/orders", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
-    const result = await res.json();
-    if (res.ok) {
-      alert("✅ Order saved successfully!");
-      buyForm.reset();
-      modal.style.display = "none";
-    } else {
-      alert(`❌ Error: ${result.error}`);
-    }
-  } catch (err) {
-    alert(`❌ Connection error: ${err.message}`);
-  }
+// Ir al carrito
+document.getElementById("view-cart").addEventListener("click", () => {
+  window.location.href = "cart.html";
 });

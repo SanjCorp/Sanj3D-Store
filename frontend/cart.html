@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cart - Robotics Lab</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <h1>Your Cart</h1>
+  <button onclick="window.location.href='catalogo.html'">Back to Catalog</button>
+</header>
+
+<main>
+  <div id="cart-items"></div>
+
+  <h2>Contact Information</h2>
+  <form id="checkout-form">
+    <label>Name: <input type="text" name="name" required></label>
+    <label>Email: <input type="email" name="email" required></label>
+    <button type="submit">Submit Order</button>
+  </form>
+</main>
+
+<script type="module">
+const cartItemsDiv = document.getElementById("cart-items");
+const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+cart.forEach(item => {
+  const div = document.createElement("div");
+  div.innerHTML = `${item.name} - $${item.price} x ${item.quantity}`;
+  cartItemsDiv.appendChild(div);
+});
+
+// Enviar pedido al API
+document.getElementById("checkout-form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  const order = {
+    name: formData.get("name"),
+    email: formData.get("email"),
+    products: cart
+  };
+
+  try {
+    const res = await fetch("https://sanj3d-store.onrender.com/api/products", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(order)
+    });
+
+    if (res.ok) {
+      alert("Order submitted successfully!");
+      localStorage.removeItem("cart");
+      window.location.href = "index.html";
+    } else {
+      const data = await res.json();
+      alert(`Error: ${data.error}`);
+    }
+  } catch (err) {
+    alert(`Connection error: ${err.message}`);
+  }
+});
+</script>
+</body>
+</html>
