@@ -9,7 +9,7 @@ form.addEventListener("submit", async (e) => {
   const mensaje = document.getElementById("mensaje").value;
 
   try {
-    const res = await fetch("https://sanj3d-store.onrender.com/api/usuarios", { // ✅ cambio de endpoint
+    const res = await fetch("https://sanj3d-store.onrender.com/api/productsdepositaro", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nombre, email, tipo, mensaje })
@@ -17,10 +17,10 @@ form.addEventListener("submit", async (e) => {
 
     const data = await res.json();
     if (res.ok) {
-      alert("✅ Solicitud enviada correctamente");
+      alert("✅ Solicitud enviada correctamente al depósito de productos");
       form.reset();
     } else {
-      alert(`❌ Error: ${data.error}`);
+      alert(`❌ Error: ${data.error || "No se pudo enviar la solicitud"}`);
     }
   } catch (err) {
     alert(`❌ Error de conexión: ${err.message}`);
