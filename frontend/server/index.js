@@ -1,9 +1,10 @@
+// frontend/server/index.js
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
-import contactRoutes from "../../routes/contact.js"; // ✅ CORRECTA ruta
+import contactRoutes from "../../routes/contact.js";
 import productRoutes from "../../routes/products.js";
 import cartRoutes from "../../routes/cart.js";
 
@@ -17,15 +18,15 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ Prefijo común para API
+// Rutas API
 app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/cart", cartRoutes);
 app.use("/api/v1/contact", contactRoutes);
 
-// ✅ Servir frontend
+// Servir frontend
 app.use(express.static("frontend"));
 
-// Conexión MongoDB
+// Conexión a MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ Conectado a MongoDB Atlas"))
   .catch(err => console.error("❌ Error de conexión:", err));
