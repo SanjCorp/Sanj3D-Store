@@ -8,6 +8,7 @@ import { fileURLToPath } from "url";
 import productRoutes from "./routes/products.js";
 import orderRoutes from "./routes/orders.js";
 import usuariosRoutes from "./routes/usuarios.js";
+import ordersRouter from "./routes/orders.js";
 
 dotenv.config();
 
@@ -19,7 +20,7 @@ app.use(express.json());
 
 // API Routes
 app.use("/api/products", productRoutes);
-app.use("/api/orders", orderRoutes);
+app.use("/api/orders", ordersRouter);
 app.use("/api/usuarios", usuariosRoutes); // <-- nueva ruta
 
 // __dirname setup

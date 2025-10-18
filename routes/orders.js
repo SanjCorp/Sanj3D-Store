@@ -3,21 +3,25 @@ import Order from "../models/Order.js";
 
 const router = express.Router();
 
-// Crear pedido
+// POST nueva orden
 router.post("/", async (req, res) => {
   try {
-    const newOrder = new Order(req.body);
-    await newOrder.save();
-    res.status(201).json(newOrder);
+    const order = new Order(req.body);
+    await order.save();
+    res.status(201).json(order);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
 
-// Obtener todos los pedidos
+// GET todas las órdenes (opcional)
 router.get("/", async (req, res) => {
-  const orders = await Order.find().populate("products.productId");
-  res.json(orders);
+  try {
+    const orders = await Order.find();
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 export default router;
