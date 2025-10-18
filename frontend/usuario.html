@@ -1,9 +1,57 @@
-<form id="solicitud">
-  <input type="text" id="nombre" name="name" placeholder="Nombre" required>
-  <input type="email" id="email" name="email" placeholder="Email" required>
-  <input type="text" id="tipo" name="type" placeholder="Tipo de proyecto" required>
-  <textarea id="mensaje" name="details" placeholder="Detalles" required></textarea>
-  <button type="submit">Enviar</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Users - Sanj3D Store</title>
+  <!-- Favicon -->
+  <link rel="icon" href="img/15.jpg" type="image/jpeg">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="usuario.css">
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="img/15.jpg" alt="Sanj3D Logo">
+      <h1>Sanj3D Store</h1>
+    </div>
+    <nav>
+      <button onclick="location.href='index.html'">Home</button>
+      <button onclick="location.href='catalogo.html'">Catalog</button>
+    </nav>
+  </header>
 
-<script src="./scripts/usuario.js" type="module"></script>
+  <main>
+    <section class="hero">
+      <h2>Welcome to the Users Page</h2>
+      <p>Here you can see your submissions and manage user data.</p>
+    </section>
+
+    <section class="user-form">
+      <h3>Submit a New User</h3>
+      <form id="solicitud">
+        <input type="text" id="nombre" name="nombre" placeholder="Name" required>
+        <input type="email" id="email" name="email" placeholder="Email" required>
+        <input type="text" id="tipo" name="tipo" placeholder="User Type" required>
+        <textarea id="mensaje" name="mensaje" placeholder="Details" rows="4" required></textarea>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section class="user-list">
+      <h3>Registered Users</h3>
+      <ul id="usuarios-container">
+        <!-- Aquí se mostrarán los usuarios desde usuario.js -->
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 Ricardo Sanjines - Sanj3D Store · <a href="attributions.html">Attributions</a>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="scripts/usuario.js" type="module"></script>
+  <script src="scripts/form.js" type="module"></script>
+</body>
+</html>
