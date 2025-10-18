@@ -1,39 +1,34 @@
+/* Modal overlay full screen */
 #buy-modal {
-  position: fixed;      /* Fija el modal sobre toda la ventana */
-  top: 0;               /* Arranca desde arriba */
-  left: 0;              /* Arranca desde la izquierda */
-  width: 100%;           /* Ocupa todo el ancho de la ventana */
-  height: 100%;          /* Ocupa toda la altura de la ventana */
-  background-color: rgba(0,0,0,0.8); /* Fondo semi-transparente */
-  display: flex;         /* Usamos flex para centrar contenido */
-  justify-content: center; /* Centrado horizontal */
-  align-items: center;     /* Centrado vertical */
-  z-index: 1000;          /* Siempre arriba de todo */
+  position: fixed;        /* Fijo sobre la ventana */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.8); /* Fondo oscuro semitransparente */
+  display: flex;          /* Para centrar contenido */
+  justify-content: center; 
+  align-items: center;
+  z-index: 9999;          /* Siempre encima de todo */
 }
 
+/* Contenido centrado */
 #modal-content {
-  background: white;
-  border-radius: 8px;
+  background-color: #fff;
   padding: 2rem;
+  border-radius: 8px;
   max-width: 500px;
   width: 90%;
-  text-align: center;
   position: relative;
 }
 
+/* Botón cerrar */
 #modal-close {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: #ff4d4d;
-  border: none;
-  color: white;
   font-size: 1.2rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 50%;
+  background: none;
+  border: none;
   cursor: pointer;
-}
-
-#modal-close:hover {
-  background: #ff0000;
 }

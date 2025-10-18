@@ -4,22 +4,21 @@ const closeModal = document.getElementById("modal-close");
 const buyForm = document.getElementById("buy-form");
 const productNameInput = document.getElementById("product-name");
 
-// Abrir modal solo al presionar Buy
+// Abrir modal al presionar Buy
 document.querySelectorAll(".buy-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     const productName = btn.dataset.product;
     document.getElementById("product-name").value = productName;
     document.getElementById("modal-title").textContent = `Buy ${productName}`;
-    document.getElementById("buy-modal").style.display = "flex"; // EMERGE
+    document.getElementById("buy-modal").style.display = "flex"; // FULLSCREEN
   });
 });
 
-
 // Cerrar modal
-closeModal.addEventListener("click", () => modal.style.display = "none");
-window.addEventListener("click", e => {
-  if (e.target === modal) modal.style.display = "none";
+document.getElementById("modal-close").addEventListener("click", () => {
+  document.getElementById("buy-modal").style.display = "none";
 });
+
 
 // Enviar datos al API orders
 buyForm.addEventListener("submit", async (e) => {
