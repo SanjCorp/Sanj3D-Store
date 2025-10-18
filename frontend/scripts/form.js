@@ -9,13 +9,15 @@ form.addEventListener("submit", async (e) => {
   const mensaje = document.getElementById("mensaje").value;
 
   try {
-    const res = await fetch("https://sanj3d-store.onrender.com/api/v1/contact", {
+    // Cambié a ruta relativa para evitar recibir HTML en lugar de JSON
+    const res = await fetch("/api/v1/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nombre, email, tipo, mensaje })
     });
 
     const data = await res.json();
+
     if (res.ok) {
       alert("Solicitud enviada correctamente ✅");
       form.reset();
