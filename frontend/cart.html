@@ -4,107 +4,20 @@
 <meta charset="UTF-8">
 <title>Cart - Robotics Lab</title>
 <link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="cart.css">
 <style>
-  body {
-    font-family: 'Poppins', Arial, sans-serif;
-    background: #f2f5f9;
-    margin: 0;
-    color: #333;
-  }
-  header {
-    background: linear-gradient(90deg, #004aad, #007bff);
-    color: white;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  header h1 {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .logo {
-    width: 50px;
-    border-radius: 8px;
-  }
-  .btn-back {
-    background: white;
-    color: #004aad;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: 0.3s;
-  }
-  .btn-back:hover {
-    background: #e8f0ff;
-  }
-  main {
-    max-width: 900px;
-    margin: 2rem auto;
-    background: white;
-    border-radius: 10px;
-    padding: 2rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  }
-  h2 {
-    border-bottom: 2px solid #007bff;
-    padding-bottom: 0.5rem;
-    margin-bottom: 1rem;
-  }
-  .cart-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #eee;
-    padding: 1rem 0;
-  }
-  .cart-item-info strong {
-    font-size: 1.1rem;
-  }
-  .cart-item button {
-    background: #ff4747;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 0.4rem 0.8rem;
-    cursor: pointer;
-  }
-  .cart-item button:hover {
-    background: #e03e3e;
-  }
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  label {
-    display: flex;
-    flex-direction: column;
-    font-weight: 600;
-  }
-  input {
-    padding: 0.6rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-  }
-  .btn-submit {
-    background: #007bff;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 0.8rem;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  .btn-submit:hover {
-    background: #005ecb;
-  }
+/* estilos de carrito */
+body { font-family:'Poppins', Arial, sans-serif; background:#f2f5f9; margin:0; color:#333; }
+header { display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; background:#004aad; color:white; }
+header h1 { display:flex; align-items:center; gap:0.5rem; }
+.logo { width:50px; border-radius:8px; }
+.btn-back, .btn-submit { padding:0.6rem 1.2rem; border-radius:6px; font-weight:600; cursor:pointer; }
+.btn-back { background:white; color:#004aad; border:none; }
+.btn-submit { background:#007bff; color:white; border:none; margin-top:1rem; }
+.btn-submit:hover { background:#005ecb; }
+main { max-width:900px; margin:2rem auto; background:white; padding:2rem; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.1); }
+.cart-item { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #eee; padding:1rem 0; }
+.cart-item-info strong { font-size:1.1rem; }
+.cart-item button { background:#ff4747; color:white; border:none; border-radius:6px; padding:0.4rem 0.8rem; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -122,14 +35,8 @@
   <section class="checkout-section">
     <h2>Contact Information</h2>
     <form id="checkout-form">
-      <label>
-        Name:
-        <input type="text" name="name" placeholder="Your full name" required>
-      </label>
-      <label>
-        Email:
-        <input type="email" name="email" placeholder="example@mail.com" required>
-      </label>
+      <label>Name: <input type="text" name="name" placeholder="Your full name" required></label>
+      <label>Email: <input type="email" name="email" placeholder="example@mail.com" required></label>
       <button type="submit" class="btn-submit">Submit Order</button>
     </form>
   </section>
@@ -142,31 +49,20 @@ let cart = JSON.parse(localStorage.getItem("cart")) || [];
 // Renderizar carrito
 function renderCart() {
   cartItemsDiv.innerHTML = '';
-  if (cart.length === 0) {
-    cartItemsDiv.innerHTML = "<p>Your cart is empty 🛒</p>";
-    return;
-  }
-
-  cart.forEach((item, index) => {
-    const div = document.createElement("div");
+  if(cart.length===0){ cartItemsDiv.innerHTML="<p>Your cart is empty 🛒</p>"; return; }
+  cart.forEach((item,i)=>{
+    const div=document.createElement("div");
     div.classList.add("cart-item");
-    div.innerHTML = `
-      <div class="cart-item-info">
-        <strong>${item.name}</strong>
-        <span>Price: $${item.price}</span>
-        <span>Quantity: ${item.quantity}</span>
-      </div>
-      <button data-index="${index}">Remove</button>
-    `;
+    div.innerHTML=`<div class="cart-item-info"><strong>${item.name}</strong><span>Price: $${item.price}</span><span>Quantity: ${item.quantity}</span></div>
+                   <button data-index="${i}">Remove</button>`;
     cartItemsDiv.appendChild(div);
   });
 
-  // Botones para eliminar
-  document.querySelectorAll(".cart-item button").forEach(btn => {
-    btn.addEventListener("click", e => {
-      const i = e.target.dataset.index;
-      cart.splice(i, 1);
-      localStorage.setItem("cart", JSON.stringify(cart));
+  document.querySelectorAll(".cart-item button").forEach(btn=>{
+    btn.addEventListener("click",e=>{
+      const i=e.target.dataset.index;
+      cart.splice(i,1);
+      localStorage.setItem("cart",JSON.stringify(cart));
       renderCart();
     });
   });
@@ -174,46 +70,34 @@ function renderCart() {
 
 renderCart();
 
-// Enviar pedido al API
-document.getElementById("checkout-form").addEventListener("submit", async e => {
+// Enviar pedido al API de orders
+document.getElementById("checkout-form").addEventListener("submit", async e=>{
   e.preventDefault();
   const formData = new FormData(e.target);
   const name = formData.get("name");
   const email = formData.get("email");
 
-  if (cart.length === 0) {
-    alert("❌ Your cart is empty!");
-    return;
-  }
+  if(cart.length===0){ alert("❌ Your cart is empty!"); return; }
 
-  try {
-    for (const item of cart) {
-      // Asegúrate que tu carrito tenga id o productId
-      const productId = item.id || item._id || item.productId;
-      if (!productId) throw new Error(`Product ID missing for ${item.name}`);
+  try{
+    for(const item of cart){
+      const productId = item.id;
+      if(!productId) throw new Error("Product ID missing in cart item.");
 
-      const res = await fetch("https://sanj3d-store.onrender.com/api/orders", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          email,
-          product: productId,
-          quantity: item.quantity || 1
-        })
+      const res = await fetch("https://sanj3d-store.onrender.com/api/orders",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({name,email,product:productId,quantity:item.quantity||1})
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || JSON.stringify(data));
+      if(!res.ok) throw new Error(data.message || JSON.stringify(data));
     }
 
-    alert("✅ Your order has been successfully submitted!");
-    localStorage.removeItem("cart");
-    window.location.href = "index.html";
-  } catch (err) {
-    alert(`❌ Error: ${err.message}`);
-    console.error(err);
-  }
+    alert("✅ All orders submitted successfully! You can stay on this page.");
+    // localStorage.removeItem("cart"); // opcional quitar si quieres mantener
+    renderCart(); // refresca carrito sin redirigir
+  }catch(err){ alert(`❌ Error: ${err.message}`); console.error(err);}
 });
 </script>
 </body>
