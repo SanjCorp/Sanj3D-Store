@@ -39,7 +39,6 @@ const router = express.Router();
  *       400:
  *         description: Faltan campos requeridos
  */
-
 router.get("/", async (req, res) => {
   try {
     const contactos = await Contact.find();

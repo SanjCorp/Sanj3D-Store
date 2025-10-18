@@ -9,7 +9,6 @@ form.addEventListener("submit", async (e) => {
   const mensaje = document.getElementById("mensaje").value;
 
   try {
-    // Cambié a ruta relativa para evitar recibir HTML en lugar de JSON
     const res = await fetch("/api/v1/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -17,14 +16,13 @@ form.addEventListener("submit", async (e) => {
     });
 
     const data = await res.json();
-
     if (res.ok) {
-      alert("Solicitud enviada correctamente ✅");
+      alert("✅ Solicitud enviada correctamente");
       form.reset();
     } else {
-      alert(`Error: ${data.error}`);
+      alert(`❌ Error: ${data.error}`);
     }
   } catch (err) {
-    alert(`Error de conexión: ${err.message}`);
+    alert(`❌ Error de conexión: ${err.message}`);
   }
 });

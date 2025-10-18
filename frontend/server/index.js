@@ -2,10 +2,15 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 
 import contactRoutes from "../../routes/contact.js";
 import productRoutes from "../../routes/products.js";
 import cartRoutes from "../../routes/cart.js";
+
+import swaggerUi from "swagger-ui-express";
+import swaggerJsdoc from "swagger-jsdoc";
 
 dotenv.config();
 
@@ -23,9 +28,6 @@ app.use("/api/v1/cart", cartRoutes);
 app.use("/api/v1/contact", contactRoutes);
 
 // Swagger
-import swaggerUi from "swagger-ui-express";
-import swaggerJsdoc from "swagger-jsdoc";
-
 const options = {
   definition: {
     openapi: "3.0.0",
@@ -38,16 +40,18 @@ const specs = swaggerJsdoc(options);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 // Servir frontend
-app.use(express.static("frontend"));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname, "../")));
+
+// Catch-all (index.html) para rutas del frontend
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../usuario.html"));
+});
 
 // Conexión a MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ Conectado a MongoDB Atlas"))
   .catch(err => console.error("❌ Error de conexión:", err));
-
-// Manejo de rutas no encontradas para API
-app.use("/api/v1/*", (req, res) => {
-  res.status(404).json({ error: "Endpoint no encontrado" });
-});
 
 app.listen(PORT, () => console.log(`🚀 Servidor corriendo en puerto ${PORT}`));
