@@ -6,7 +6,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 import productRoutes from "./routes/products.js";
-import orderRoutes from "./routes/orders.js";
+import ordersRouter from "./routes/orders.js";
 import usuariosRoutes from "./routes/usuarios.js";
 import ordersRouter from "./routes/orders.js";
 

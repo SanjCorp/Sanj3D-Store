@@ -3,24 +3,24 @@ import Order from "../models/Order.js";
 
 const router = express.Router();
 
-// POST nueva orden
+// POST nuevo pedido
 router.post("/", async (req, res) => {
   try {
     const order = new Order(req.body);
     await order.save();
-    res.status(201).json(order);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(201).json(order); // retorna JSON del pedido
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
 });
 
-// GET todas las órdenes (opcional)
+// GET todos los pedidos
 router.get("/", async (req, res) => {
   try {
     const orders = await Order.find();
     res.json(orders);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
