@@ -139,7 +139,7 @@
 const cartItemsDiv = document.getElementById("cart-items");
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-// Mostrar productos del carrito
+// Renderizar carrito
 function renderCart() {
   cartItemsDiv.innerHTML = '';
   if (cart.length === 0) {
@@ -161,6 +161,7 @@ function renderCart() {
     cartItemsDiv.appendChild(div);
   });
 
+  // Botones para eliminar
   document.querySelectorAll(".cart-item button").forEach(btn => {
     btn.addEventListener("click", e => {
       const i = e.target.dataset.index;
@@ -173,7 +174,7 @@ function renderCart() {
 
 renderCart();
 
-// Enviar pedido
+// Enviar pedido al API
 document.getElementById("checkout-form").addEventListener("submit", async e => {
   e.preventDefault();
   const formData = new FormData(e.target);
@@ -187,9 +188,9 @@ document.getElementById("checkout-form").addEventListener("submit", async e => {
 
   try {
     for (const item of cart) {
-      // 👇 Verifica cuál es tu campo ID real en el objeto del carrito
-      const productId = item._id || item.id || item.productId;
-      if (!productId) throw new Error("Product ID missing in cart item.");
+      // Asegúrate que tu carrito tenga id o productId
+      const productId = item.id || item._id || item.productId;
+      if (!productId) throw new Error(`Product ID missing for ${item.name}`);
 
       const res = await fetch("https://sanj3d-store.onrender.com/api/orders", {
         method: "POST",
@@ -203,7 +204,7 @@ document.getElementById("checkout-form").addEventListener("submit", async e => {
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || JSON.stringify(data));
+      if (!res.ok) throw new Error(data.error || JSON.stringify(data));
     }
 
     alert("✅ Your order has been successfully submitted!");
