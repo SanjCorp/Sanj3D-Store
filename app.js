@@ -2,7 +2,10 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import Order from './models/Order.js'; // asegúrate de poner .js
+import dotenv from 'dotenv';
+import Order from './models/Order.js'; // asegúrate de que este archivo existe y tenga export default
+
+dotenv.config();
 
 const app = express();
 app.use(cors());
@@ -12,8 +15,9 @@ app.use(express.json());
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
-}).then(() => console.log('MongoDB connected'))
-  .catch(err => console.error(err));
+})
+.then(() => console.log('MongoDB connected'))
+.catch(err => console.error(err));
 
 // Rutas
 app.get('/api/orders', async (req, res) => {
@@ -34,6 +38,9 @@ app.post('/api/orders', async (req, res) => {
     res.status(400).json({ error: 'Error creating order' });
   }
 });
+
+// Servir archivos estáticos (opcional, si quieres front-end en el mismo proyecto)
+app.use(express.static('public')); 
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
