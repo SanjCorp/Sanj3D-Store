@@ -8,11 +8,12 @@ const productNameInput = document.getElementById("product-name");
 document.querySelectorAll(".buy-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     const productName = btn.dataset.product;
-    productNameInput.value = productName; // llena el hidden input
+    document.getElementById("product-name").value = productName;
     document.getElementById("modal-title").textContent = `Buy ${productName}`;
-    modal.style.display = "flex"; // se muestra en fullscreen
+    document.getElementById("buy-modal").style.display = "flex"; // EMERGE
   });
 });
+
 
 // Cerrar modal
 closeModal.addEventListener("click", () => modal.style.display = "none");

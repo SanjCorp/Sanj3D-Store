@@ -218,8 +218,6 @@
   </section>
 </main>
 
-<!-- Accessible modal -->
-<!-- Fullscreen modal -->
 <div id="buy-modal" aria-hidden="true" style="display:none;">
   <div id="modal-content">
     <button id="modal-close" aria-label="Close modal">X</button>
@@ -236,6 +234,7 @@
     </form>
   </div>
 </div>
+
 
 
 
@@ -268,19 +267,5 @@ document.addEventListener('DOMContentLoaded', () => {
   applyFilter(); // Ejecutar al cargar
 });
 </script>
-<div id="buy-modal" class="modal">
-  <div class="modal-content">
-    <span id="modal-close" class="close">&times;</span>
-    <h2>Buy Product</h2>
-    <form id="buy-form">
-      <input type="text" id="buyer-name" name="nombre" placeholder="Your Name" required>
-      <input type="email" id="buyer-email" name="email" placeholder="Your Email" required>
-      <input type="number" id="quantity" name="cantidad" placeholder="Quantity" min="1" value="1" required>
-      <input type="hidden" id="product-name" name="producto">
-      <button type="submit">Submit</button>
-    </form>
-  </div>
-</div>
-
 </body>
 </html>
