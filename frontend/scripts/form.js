@@ -1,37 +1,35 @@
-// frontend/scripts/form.js
-
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.querySelector("#solicitud");
-
-  if (!form) return;
+  const form = document.getElementById("solicitud");
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const data = {
-      name: form.nombre.value.trim(),
-      email: form.email.value.trim(),
-      type: form.tipo.value.trim(),
-      message: form.mensaje.value.trim(),
+      nombre: document.getElementById("nombre").value,
+      email: document.getElementById("email").value,
+      tipo: document.getElementById("tipo").value,
+      mensaje: document.getElementById("mensaje").value,
     };
 
     try {
       const response = await fetch("https://sanj3d-store.onrender.com/api/v1/contact", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(data),
       });
 
       if (!response.ok) {
-        const errText = await response.text();
-        throw new Error(`Server responded with ${response.status}: ${errText}`);
+        const errorText = await response.text();
+        throw new Error(errorText || "Server error");
       }
 
-      alert("Mensaje enviado con éxito.");
+      alert("✅ Message sent successfully!");
       form.reset();
-    } catch (error) {
-      console.error("❌ Error al enviar el formulario:", error);
-      alert("Network error, please try again later.");
+    } catch (err) {
+      console.error("Error:", err);
+      alert("⚠️ Network error, please try again later.");
     }
   });
 });
