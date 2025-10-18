@@ -1,31 +1,28 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("contactForm");
+const form = document.getElementById("solicitud");
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    const projectType = document.getElementById("projectType").value;
-    const requestDetails = document.getElementById("requestDetails").value;
+  const nombre = document.getElementById("nombre").value;
+  const email = document.getElementById("email").value;
+  const tipo = document.getElementById("tipo").value;
+  const mensaje = document.getElementById("mensaje").value;
 
-    try {
-      const response = await fetch("/api/v1/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, projectType, requestDetails })
-      });
+  try {
+    const res = await fetch("/api/v1/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nombre, email, tipo, mensaje })
+    });
 
-      const result = await response.json();
-
-      if (response.ok) {
-        alert(result.message);
-        form.reset();
-      } else {
-        alert("❌ Error: " + result.error);
-      }
-    } catch (error) {
-      alert("❌ Error al enviar formulario: " + error.message);
+    if (res.ok) {
+      alert("Request submitted successfully!");
+      form.reset();
+    } else {
+      alert("Error submitting request.");
     }
-  });
+  } catch (err) {
+    console.error(err);
+    alert("Error submitting request.");
+  }
 });

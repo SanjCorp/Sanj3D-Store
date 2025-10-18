@@ -1,12 +1,11 @@
 import mongoose from "mongoose";
 
 const contactSchema = new mongoose.Schema({
-  name: { type: String, required: true },
+  nombre: { type: String, required: true },
   email: { type: String, required: true },
-  projectType: { type: String, required: true },
-  requestDetails: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now }
-});
+  tipo: { type: String, required: true },
+  mensaje: { type: String, required: true }
+}, { timestamps: true });
 
 const Contact = mongoose.model("Contact", contactSchema);
 
