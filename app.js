@@ -1,62 +1,44 @@
-// app.js
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-require('dotenv').config();
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
+
+import productRoutes from "./routes/products.js";
+import orderRoutes from "./routes/orders.js";
+import usuariosRoutes from "./routes/usuarios.js";
+
+dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// Middlewares
+// Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public')); // Para servir catalogo.html, cart.html, img/, css/, js/
 
-// Conexión a MongoDB
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB connection error:', err));
+// API Routes
+app.use("/api/products", productRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/usuarios", usuariosRoutes); // <-- nueva ruta
 
-// Schemas
-const orderSchema = new mongoose.Schema({
-  nombre: { type: String, required: true },
-  email: { type: String, required: true },
-  producto: { type: String, required: true },
-  cantidad: { type: Number, required: true },
-  precio: { type: Number, required: true },
-  fecha: { type: Date, default: Date.now }
+// __dirname setup
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Servir frontend
+app.use(express.static(path.join(__dirname, "frontend")));
+
+// Fallback para SPA
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "index.html"));
 });
 
-const Order = mongoose.model('Order', orderSchema);
-
-// Rutas
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/catalogo.html'); // catalogo como página principal
-});
-
-// API: Obtener todos los pedidos
-app.get('/api/orders', async (req, res) => {
-  try {
-    const orders = await Order.find();
-    res.json(orders);
-  } catch (err) {
-    res.status(500).json({ error: 'Error fetching orders' });
-  }
-});
-
-// API: Crear un pedido
-app.post('/api/orders', async (req, res) => {
-  try {
-    const { nombre, email, producto, cantidad, precio } = req.body;
-    const order = new Order({ nombre, email, producto, cantidad, precio });
-    await order.save();
-    res.status(201).json({ message: 'Order created', order });
-  } catch (err) {
-    res.status(400).json({ error: 'Error creating order', details: err.message });
-  }
-});
-
-// Levantar servidor
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+// MongoDB + server
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("✅ Conectado a MongoDB Atlas");
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => console.log(`🚀 Servidor corriendo en puerto ${PORT}`));
+  })
+  .catch(err => console.error("❌ Error al conectar MongoDB:", err));
