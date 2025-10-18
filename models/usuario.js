@@ -7,4 +7,6 @@ const usuarioSchema = new mongoose.Schema({
   mensaje: { type: String, required: true },
 }, { timestamps: true });
 
-export default mongoose.model("Usuario", usuarioSchema);
+const Usuario = mongoose.model("Usuario", usuarioSchema);
+
+export default Usuario;
