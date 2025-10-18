@@ -214,6 +214,14 @@
   <div>© Ricardo Sanjines - Robotics Lab</div>
   <div><a href="attributions.html">Attributions</a> · <a href="https://youtu.be/cLYs1AFFROo?si=MJXdSz-cHtrqmirV">Demo video (link)</a></div>
 </footer>
+<div class="card" data-cat="brazo">
+  <img src="img/1.jpg" alt="Acrylic Robotic Arm with Arduino UNO" loading="lazy" width="300" height="200">
+  <h4>Acrylic Robotic Arm with Arduino UNO</h4>
+  <p><em>Robotic arms · Arduino UNO</em></p>
+  <p>4-axis robotic arm, acrylic structure cut with laser.</p>
+  <p><strong>$350</strong></p>
+  <button class="buy-btn" data-product="Acrylic Robotic Arm with Arduino UNO">Buy</button>
+</div>
 
 <script type="module" src="./scripts/catalogo.js"></script>
 
@@ -239,6 +247,19 @@ document.addEventListener('DOMContentLoaded', () => {
   applyFilter(); // Ejecutar al cargar
 });
 </script>
+<div id="buy-modal" class="modal">
+  <div class="modal-content">
+    <span id="modal-close" class="close">&times;</span>
+    <h2>Buy Product</h2>
+    <form id="buy-form">
+      <input type="text" id="buyer-name" name="nombre" placeholder="Your Name" required>
+      <input type="email" id="buyer-email" name="email" placeholder="Your Email" required>
+      <input type="number" id="quantity" name="cantidad" placeholder="Quantity" min="1" value="1" required>
+      <input type="hidden" id="product-name" name="producto">
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+</div>
 
 </body>
 </html>
