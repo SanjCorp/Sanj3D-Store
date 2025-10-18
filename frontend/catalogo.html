@@ -219,8 +219,11 @@
 </main>
 
 <!-- Accessible modal -->
+<!-- Fullscreen modal -->
 <div id="buy-modal" aria-hidden="true" style="display:none;">
   <div id="modal-content">
+    <button id="modal-close" aria-label="Close modal">X</button>
+    <h2 id="modal-title">Buy Product</h2>
     <form id="buy-form">
       <input type="hidden" id="product-name" name="producto">
       <label for="nombre">Name:</label>
@@ -232,22 +235,14 @@
       <button type="submit">Submit Order</button>
     </form>
   </div>
-  <button id="modal-close" aria-label="Close modal">X</button>
 </div>
+
 
 
 <footer class="container footer">
   <div>© Ricardo Sanjines - Robotics Lab</div>
   <div><a href="attributions.html">Attributions</a> · <a href="https://youtu.be/cLYs1AFFROo?si=MJXdSz-cHtrqmirV">Demo video (link)</a></div>
 </footer>
-<div class="card" data-cat="brazo">
-  <img src="img/1.jpg" alt="Acrylic Robotic Arm with Arduino UNO" loading="lazy" width="300" height="200">
-  <h4>Acrylic Robotic Arm with Arduino UNO</h4>
-  <p><em>Robotic arms · Arduino UNO</em></p>
-  <p>4-axis robotic arm, acrylic structure cut with laser.</p>
-  <p><strong>$350</strong></p>
-  <button class="buy-btn" data-product="Acrylic Robotic Arm with Arduino UNO">Buy</button>
-</div>
 
 <script type="module" src="./scripts/catalogo.js"></script>
 

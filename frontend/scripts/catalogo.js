@@ -9,7 +9,8 @@ document.querySelectorAll(".buy-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     const productName = btn.dataset.product;
     productNameInput.value = productName; // llena el hidden input
-    modal.style.display = "block";
+    document.getElementById("modal-title").textContent = `Buy ${productName}`;
+    modal.style.display = "flex"; // se muestra en fullscreen
   });
 });
 
