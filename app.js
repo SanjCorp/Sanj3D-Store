@@ -8,7 +8,6 @@ import { fileURLToPath } from "url";
 import productRoutes from "./routes/products.js";
 import ordersRouter from "./routes/orders.js";
 import usuariosRoutes from "./routes/usuarios.js";
-import ordersRouter from "./routes/orders.js";
 
 dotenv.config();
 
