@@ -8,7 +8,7 @@ const productNameInput = document.getElementById("product-name");
 document.querySelectorAll(".buy-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     const productName = btn.dataset.product;
-    productNameInput.value = productName;
+    productNameInput.value = productName; // llena el hidden input
     modal.style.display = "block";
   });
 });
