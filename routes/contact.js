@@ -1,34 +1,29 @@
-const express = require("express");
-const router = express.Router();
-const Contact = require("../models/contact");
+import express from "express";
+import Contact from "../models/contact.js";
 
-// ✅ Ruta para guardar contacto
+const router = express.Router();
+
+// POST: guardar mensaje
 router.post("/", async (req, res) => {
   try {
     const { nombre, email, tipo, mensaje } = req.body;
-
-    if (!nombre || !email || !mensaje) {
-      return res.status(400).json({ message: "All fields are required." });
-    }
-
-    const nuevoContacto = new Contact({ nombre, email, tipo, mensaje });
-    await nuevoContacto.save();
-
-    res.status(201).json({ message: "Contact saved successfully!" });
+    const nuevo = new Contact({ nombre, email, tipo, mensaje });
+    await nuevo.save();
+    res.status(201).json({ success: true, message: "Mensaje guardado" });
   } catch (err) {
-    console.error("Error saving contact:", err);
-    res.status(500).json({ message: "Error saving contact." });
+    console.error("❌ Error al guardar contacto:", err);
+    res.status(500).json({ success: false, error: "Error al guardar el mensaje" });
   }
 });
 
-// ✅ Ruta para verificar contactos guardados (GET)
+// GET: listar mensajes guardados
 router.get("/", async (req, res) => {
   try {
-    const contactos = await Contact.find();
-    res.json(contactos);
+    const mensajes = await Contact.find();
+    res.status(200).json(mensajes);
   } catch (err) {
-    res.status(500).json({ message: "Error getting contacts." });
+    res.status(500).json({ success: false, error: "Error al obtener los mensajes" });
   }
 });
 
-module.exports = router;
+export default router;
