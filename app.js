@@ -1,11 +1,11 @@
-// server.js o app.js
-const express = require('express');
-const mongoose = require('mongoose');
-const Order = require('./models/Order'); // tu modelo de pedidos
-const cors = require('cors');
+// app.js
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import Order from './models/Order.js'; // asegúrate de poner .js
 
 const app = express();
-app.use(cors()); // para poder ver la API desde el navegador
+app.use(cors());
 app.use(express.json());
 
 // Conexión a MongoDB
@@ -15,17 +15,16 @@ mongoose.connect(process.env.MONGO_URI, {
 }).then(() => console.log('MongoDB connected'))
   .catch(err => console.error(err));
 
-// GET todos los pedidos - endpoint seguro
+// Rutas
 app.get('/api/orders', async (req, res) => {
   try {
-    const orders = await Order.find(); // trae todos los pedidos
-    res.status(200).json(orders); // devuelve JSON directo
+    const orders = await Order.find();
+    res.status(200).json(orders);
   } catch (err) {
     res.status(500).json({ error: 'Error fetching orders' });
   }
 });
 
-// POST para crear pedidos
 app.post('/api/orders', async (req, res) => {
   try {
     const newOrder = new Order(req.body);
