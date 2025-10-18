@@ -1,44 +1,40 @@
-import express from "express";
-import mongoose from "mongoose";
-import cors from "cors";
-import dotenv from "dotenv";
-import path from "path";
-import { fileURLToPath } from "url";
-
-import productRoutes from "./routes/products.js";
-import ordersRouter from "./routes/orders.js";
-import usuariosRoutes from "./routes/usuarios.js";
-
-dotenv.config();
+// server.js o app.js
+const express = require('express');
+const mongoose = require('mongoose');
+const Order = require('./models/Order'); // tu modelo de pedidos
+const cors = require('cors');
 
 const app = express();
-
-// Middleware
-app.use(cors());
+app.use(cors()); // para poder ver la API desde el navegador
 app.use(express.json());
 
-// API Routes
-app.use("/api/products", productRoutes);
-app.use("/api/orders", ordersRouter);
-app.use("/api/usuarios", usuariosRoutes); // <-- nueva ruta
+// Conexión a MongoDB
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => console.log('MongoDB connected'))
+  .catch(err => console.error(err));
 
-// __dirname setup
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Servir frontend
-app.use(express.static(path.join(__dirname, "frontend")));
-
-// Fallback para SPA
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend", "index.html"));
+// GET todos los pedidos - endpoint seguro
+app.get('/api/orders', async (req, res) => {
+  try {
+    const orders = await Order.find(); // trae todos los pedidos
+    res.status(200).json(orders); // devuelve JSON directo
+  } catch (err) {
+    res.status(500).json({ error: 'Error fetching orders' });
+  }
 });
 
-// MongoDB + server
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("✅ Conectado a MongoDB Atlas");
-    const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => console.log(`🚀 Servidor corriendo en puerto ${PORT}`));
-  })
-  .catch(err => console.error("❌ Error al conectar MongoDB:", err));
+// POST para crear pedidos
+app.post('/api/orders', async (req, res) => {
+  try {
+    const newOrder = new Order(req.body);
+    await newOrder.save();
+    res.status(201).json(newOrder);
+  } catch (err) {
+    res.status(400).json({ error: 'Error creating order' });
+  }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
