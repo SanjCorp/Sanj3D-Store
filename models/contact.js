@@ -1,12 +1,13 @@
-// frontend/models/contact.js
 import mongoose from "mongoose";
 
 const contactSchema = new mongoose.Schema({
-  nombre: { type: String, required: true },
+  name: { type: String, required: true },
   email: { type: String, required: true },
-  tipo: { type: String },
-  mensaje: { type: String, required: true },
-  fecha: { type: Date, default: Date.now }
+  projectType: { type: String, required: true },
+  requestDetails: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now }
 });
 
-export default mongoose.model("Contact", contactSchema);
+const Contact = mongoose.model("Contact", contactSchema);
+
+export default Contact;

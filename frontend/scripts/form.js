@@ -1,35 +1,31 @@
-// frontend/scripts/form.js
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("solicitud");
+  const form = document.getElementById("contactForm");
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const nombre = form.nombre.value.trim();
-    const email = form.email.value.trim();
-    const tipo = form.tipo.value;
-    const mensaje = form.mensaje.value.trim();
-
-    if (!nombre || !email || !mensaje) {
-      alert("⚠️ Please fill in all required fields.");
-      return;
-    }
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const projectType = document.getElementById("projectType").value;
+    const requestDetails = document.getElementById("requestDetails").value;
 
     try {
-      const res = await fetch("/api/v1/contact", {
+      const response = await fetch("/api/v1/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre, email, tipo, mensaje }),
+        body: JSON.stringify({ name, email, projectType, requestDetails })
       });
 
-      if (!res.ok) throw new Error("Server error");
+      const result = await response.json();
 
-      const data = await res.json();
-      alert("✅ Message sent successfully!");
-      form.reset();
-    } catch (err) {
-      console.error("❌ Error:", err);
-      alert("⚠️ Network error, please try again later.");
+      if (response.ok) {
+        alert(result.message);
+        form.reset();
+      } else {
+        alert("❌ Error: " + result.error);
+      }
+    } catch (error) {
+      alert("❌ Error al enviar formulario: " + error.message);
     }
   });
 });

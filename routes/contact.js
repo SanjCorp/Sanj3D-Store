@@ -1,35 +1,27 @@
-// frontend/routes/contact.js
 import express from "express";
 import Contact from "../models/contact.js";
 
 const router = express.Router();
 
-// POST: guardar mensaje
-router.post("/", async (req, res) => {
+// GET: obtener todos los contactos
+router.get("/", async (req, res) => {
   try {
-    const { nombre, email, tipo, mensaje } = req.body;
-
-    if (!nombre || !email || !mensaje) {
-      return res.status(400).json({ message: "Campos requeridos faltantes" });
-    }
-
-    const newContact = new Contact({ nombre, email, tipo, mensaje });
-    await newContact.save();
-
-    res.status(201).json({ message: "Mensaje guardado exitosamente" });
+    const contacts = await Contact.find();
+    res.json(contacts);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Error del servidor" });
+    res.status(500).json({ error: err.message });
   }
 });
 
-// GET: obtener todos los mensajes (opcional)
-router.get("/", async (req, res) => {
+// POST: guardar un nuevo contacto
+router.post("/", async (req, res) => {
+  const { name, email, projectType, requestDetails } = req.body;
   try {
-    const messages = await Contact.find().sort({ fecha: -1 });
-    res.json(messages);
+    const newContact = new Contact({ name, email, projectType, requestDetails });
+    await newContact.save();
+    res.status(201).json({ message: "✅ Contacto guardado correctamente", contact: newContact });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(400).json({ error: err.message });
   }
 });
 

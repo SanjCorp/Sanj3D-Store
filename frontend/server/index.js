@@ -1,4 +1,3 @@
-// frontend/server/index.js
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
@@ -21,7 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 // Rutas API
 app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/cart", cartRoutes);
-app.use("/api/v1/contact", contactRoutes);
+app.use("/api/v1/contact", contactRoutes); // <-- tu endpoint de contactos
 
 // Servir frontend
 app.use(express.static("frontend"));
@@ -31,4 +30,5 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ Conectado a MongoDB Atlas"))
   .catch(err => console.error("❌ Error de conexión:", err));
 
+// Iniciar servidor
 app.listen(PORT, () => console.log(`🚀 Servidor corriendo en puerto ${PORT}`));
