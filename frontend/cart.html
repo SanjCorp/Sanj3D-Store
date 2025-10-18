@@ -36,6 +36,7 @@
 </main>
 
 <script type="module">
+// Obtener elementos
 const cartItemsDiv = document.getElementById("cart-items");
 const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -53,7 +54,7 @@ cart.forEach(item => {
   cartItemsDiv.appendChild(div);
 });
 
-// Enviar pedido al API
+// Enviar pedido al API de orders
 document.getElementById("checkout-form").addEventListener("submit", async e => {
   e.preventDefault();
   const formData = new FormData(e.target);
@@ -66,6 +67,7 @@ document.getElementById("checkout-form").addEventListener("submit", async e => {
   }
 
   try {
+    // Enviar cada producto como orden individual
     for (const item of cart) {
       const res = await fetch("https://sanj3d-store.onrender.com/api/orders", {
         method: "POST",
@@ -73,7 +75,7 @@ document.getElementById("checkout-form").addEventListener("submit", async e => {
         body: JSON.stringify({
           name,
           email,
-          product: item.name,
+          product: item.id,      // ID del producto desde el carrito
           quantity: item.quantity
         })
       });
