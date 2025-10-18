@@ -3,30 +3,65 @@ import Contact from "../models/contact.js";
 
 const router = express.Router();
 
-// GET all contacts
+/**
+ * @swagger
+ * /contact:
+ *   get:
+ *     summary: Obtener todas las solicitudes de contacto
+ *     responses:
+ *       200:
+ *         description: Lista de contactos
+ *   post:
+ *     summary: Registrar nueva solicitud de contacto
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               tipo:
+ *                 type: string
+ *               mensaje:
+ *                 type: string
+ *             required:
+ *               - nombre
+ *               - email
+ *               - tipo
+ *               - mensaje
+ *     responses:
+ *       201:
+ *         description: Solicitud registrada correctamente
+ *       400:
+ *         description: Faltan campos requeridos
+ */
+
 router.get("/", async (req, res) => {
   try {
-    const contacts = await Contact.find();
-    res.json(contacts);
+    const contactos = await Contact.find();
+    res.json(contactos);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ error: err.message });
   }
 });
 
-// POST new contact
 router.post("/", async (req, res) => {
-  const contact = new Contact({
-    nombre: req.body.nombre,
-    email: req.body.email,
-    tipo: req.body.tipo,
-    mensaje: req.body.mensaje,
-  });
+  const { nombre, email, tipo, mensaje } = req.body;
+
+  if (!nombre || !email || !tipo || !mensaje) {
+    return res.status(400).json({ error: "Todos los campos son requeridos" });
+  }
 
   try {
-    const newContact = await contact.save();
-    res.status(201).json(newContact);
+    const newContact = new Contact({ nombre, email, tipo, mensaje });
+    await newContact.save();
+    res.status(201).json({ message: "Solicitud registrada correctamente", contact: newContact });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ error: err.message });
   }
 });
 

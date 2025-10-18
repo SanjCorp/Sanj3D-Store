@@ -20,7 +20,22 @@ app.use(express.urlencoded({ extended: true }));
 // Rutas API
 app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/cart", cartRoutes);
-app.use("/api/v1/contact", contactRoutes); // Solo API JSON
+app.use("/api/v1/contact", contactRoutes);
+
+// Swagger (Opcional)
+import swaggerUi from "swagger-ui-express";
+import swaggerJsdoc from "swagger-jsdoc";
+
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: { title: "Sanj3D Store API", version: "1.0.0" },
+    servers: [{ url: "https://sanj3d-store.onrender.com/api/v1" }],
+  },
+  apis: ["../../routes/*.js"],
+};
+const specs = swaggerJsdoc(options);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 // Servir frontend
 app.use(express.static("frontend"));

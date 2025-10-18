@@ -9,20 +9,20 @@ form.addEventListener("submit", async (e) => {
   const mensaje = document.getElementById("mensaje").value;
 
   try {
-    const res = await fetch("/api/v1/contact", {
+    const res = await fetch("https://sanj3d-store.onrender.com/api/v1/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nombre, email, tipo, mensaje })
     });
 
+    const data = await res.json();
     if (res.ok) {
-      alert("Request submitted successfully!");
+      alert("Solicitud enviada correctamente ✅");
       form.reset();
     } else {
-      alert("Error submitting request.");
+      alert(`Error: ${data.error}`);
     }
   } catch (err) {
-    console.error(err);
-    alert("Error submitting request.");
+    alert(`Error de conexión: ${err.message}`);
   }
 });
