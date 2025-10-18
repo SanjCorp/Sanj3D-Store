@@ -1,48 +1,32 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario de Usuario</title>
-    <link rel="stylesheet" href="usuario.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro de Usuario - Sanj3D Store</title>
+  <link rel="stylesheet" href="usuario.css" />
 </head>
 <body>
-    <header>
-        <h1>Registro de Usuario</h1>
-    </header>
-<main id="product-container"></main>
+  <main>
+    <h1>Registro de Solicitud</h1>
+    <form id="solicitud">
+      <label>Nombre:</label>
+      <input type="text" id="nombre" name="nombre" required />
 
-    <main>
-        <form id="usuarioForm">
-            <label for="name">Nombre:</label>
-            <input type="text" id="name" name="name" required>
+      <label>Email:</label>
+      <input type="email" id="email" name="email" required />
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+      <label>Tipo de Proyecto:</label>
+      <input type="text" id="tipo" name="tipo" required />
 
-            <label for="projectType">Tipo de Proyecto:</label>
-            <input type="text" id="projectType" name="projectType" required>
+      <label>Detalles:</label>
+      <textarea id="mensaje" name="mensaje" required></textarea>
 
-            <label for="requestDetails">Detalles del Pedido:</label>
-            <textarea id="requestDetails" name="requestDetails" required></textarea>
+      <button type="submit">Enviar</button>
+    </form>
+  </main>
 
-            <button type="submit">Enviar</button>
-        </form>
-
-        <div id="usuarioList">
-            <h2>Usuarios Registrados</h2>
-            <ul id="list"></ul>
-        </div>
-    </main>
-    <main>
-  <h2>Productos disponibles</h2>
-  <section id="product-container" class="product-grid"></section>
-</main>
-
-<script src="scripts/usuario.js"></script>
-
-
-<script src="scripts/usuario.js"></script>
-
+  <script src="scripts/form.js"></script>
+  <script src="scripts/usuario.js"></script>
 </body>
 </html>

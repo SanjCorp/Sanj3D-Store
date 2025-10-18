@@ -1,28 +1,32 @@
-document.addEventListener("DOMContentLoaded", async () => {
-  const container = document.getElementById("product-container");
+const form = document.getElementById("solicitud");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const nombre = document.getElementById("nombre").value;
+  const email = document.getElementById("email").value;
+  const tipo = document.getElementById("tipo").value;
+  const mensaje = document.getElementById("mensaje").value;
 
   try {
-    const response = await fetch("https://sanj3d-store.onrender.com/api/products");
-    const products = await response.json();
-
-    if (!Array.isArray(products)) {
-      throw new Error("La API no devolvió un array válido");
-    }
-
-    products.forEach((p) => {
-      const card = document.createElement("div");
-      card.className = "product-card";
-      card.innerHTML = `
-        <img src="${p.image || 'img/default.png'}" alt="${p.name}">
-        <h3>${p.name}</h3>
-        <p><strong>Material:</strong> ${p.material || 'PLA'}</p>
-        <p><strong>Descripción:</strong> ${p.description || p.details || 'Sin detalles'}</p>
-        <p><strong>Precio:</strong> ${p.price ? p.price + ' Bs' : 'A consultar'}</p>
-      `;
-      container.appendChild(card);
+    const res = await fetch("https://sanj3d-store.onrender.com/api/products", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: nombre,
+        email: email,
+        type: tipo,
+        details: mensaje
+      })
     });
-  } catch (error) {
-    console.error("Error al cargar productos:", error);
-    container.innerHTML = `<p style="color:red;">❌ No se pudieron cargar los productos.</p>`;
+
+    if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
+
+    const data = await res.json();
+    alert("✅ Registro guardado correctamente en la base de datos");
+    form.reset();
+    localStorage.clear();
+  } catch (err) {
+    alert(`❌ Error al conectar con la API: ${err.message}`);
   }
 });
